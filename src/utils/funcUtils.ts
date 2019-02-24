@@ -54,3 +54,17 @@ export async function loginUser (email: string, password: string) {
     windowClient[WINDOW_USER_SCRIPT_VARIABLE] = data || {};
   }
 };
+
+export function authInitialProps(isProtectedRoute?: boolean) {
+  return function({ req, res }: any) {
+    const auth = req ? getServerSideToken(req) : getClientSideToken();
+    const currentPath = req ? req.url : window.location.pathname;
+    const user = auth.user;
+    const isAnonymous = !user || user.type !== "authenticated";
+    if (isProtectedRoute && isAnonymous && currentPath !== "/login") {
+      return redirectUser(res, "/login");
+    }
+  
+    return { auth };
+  }
+}

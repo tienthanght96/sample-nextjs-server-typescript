@@ -38,7 +38,6 @@ app.prepare().then(() => {
   // get body from request -> save token cookie when login success
   server.post("/api/login", async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    console.log({ email, password });
     const user = await authenticate(email, password);
     if (!user) {
       return res.status(403).send("Invalid email or password");
@@ -59,10 +58,15 @@ app.prepare().then(() => {
       const { data } = await axios.get(
         "https://jsonplaceholder.typicode.com/users"
       );
-      const userProfile = data.find((user: any) => user.emal === token.email);
+       const userProfile = data.find((user: any) => user.email === token.email);
       return res.json({ user: userProfile });
     }
     res.sendStatus(404);
+  });
+
+  server.post("/api/logout", (_0: Request, res: Response) => {
+    res.clearCookie("token", COOKIE_OPTIONS);
+    res.sendStatus(204);
   });
 
   server.get("*", (req: any, res: any) => {

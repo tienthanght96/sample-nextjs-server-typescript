@@ -23,29 +23,33 @@ const Layout: React.FunctionComponent<Props> = ({ children, auth, title = 'This 
       </Head>
       <header>
         <nav>
+
           <span>
             Welcome, <strong>{`${user.name || "Guest"} `}</strong>
           </span>
           { user.email
             ? (
                 <React.Fragment>
+                  <Link href='/'><a>Home</a></Link> | {' '}
                   <Link href="/profile">
                     <a>Profile</a>
                   </Link>
-                  <button onClick={logoutUser}>Logout</button>
+                  <button onClick={logoutUser}>Logout{' '}</button>{' '}
                 </React.Fragment>
               )
             : (
               // UnAuth Navigation
-                <Link href="/login">
-                  <a>Login</a>
-                </Link>
+                <>
+                  <Link href='/'><a>Home</a></Link> | {' '}
+                  <Link href="/login">
+                    <a>Login {' '}</a>
+                  </Link>
+                </>
               )
           }
-          <Link href='/'><a>Home</a></Link> | {' '}
-          <Link href='/list-class'><a>List Example</a></Link> | {' '}
+          {/* <Link href='/list-class'><a>List Example</a></Link> | {' '}
           <Link href='/list-fc'><a>List Example (as Functional Component)</a></Link> | {' '}
-          <Link href='/about'><a>About</a></Link> | {' '}
+          <Link href='/about'><a>About</a></Link> | {' '} */}
         </nav>
       </header>
       {children}
